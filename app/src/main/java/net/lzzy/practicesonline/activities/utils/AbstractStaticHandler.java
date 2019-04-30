@@ -10,10 +10,10 @@ import java.lang.ref.WeakReference;
  * Created by lzzy_gxy on 2019/4/12.
  * Description:
  */
-public abstract class AbstractStativHandler<T> extends Handler {
+public abstract class AbstractStaticHandler<T> extends Handler {
     private final WeakReference<T> context;
 
-    public AbstractStativHandler(T context) {
+    public AbstractStaticHandler(T context) {
         this.context = new WeakReference<>(context);
     }
 

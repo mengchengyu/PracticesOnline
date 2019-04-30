@@ -1,7 +1,5 @@
 package net.lzzy.practicesonline.activities.models;
 
-import android.widget.EditText;
-
 import net.lzzy.practicesonline.activities.constants.DbConstants;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 import net.lzzy.sqllib.SqlRepository;
@@ -26,7 +24,7 @@ public class PracticeFactory {
         repository = new SqlRepository<>(AppUtils.getContext(), Practice.class, DbConstants.packager);
     }
 
-    private List<Practice> get() {
+    public List<Practice> get() {
         return repository.get();
     }
 
@@ -34,7 +32,7 @@ public class PracticeFactory {
         return repository.getById(id);
     }
 
-    public List<Practice> seaarch(String kw) {
+    public List<Practice> search(String kw) {
         try {
             return repository.getByKeyword(kw,
                     new String[]{Practice.COL_NAME, Practice.COL_OUTLINES}, false);
@@ -65,7 +63,7 @@ public class PracticeFactory {
 
     }
 
-    public UUID getPPracticeId(int apiId) {
+    public UUID getPracticeId(int apiId) {
         try {
             List<Practice> practices = repository.getByKeyword(String.valueOf(apiId),
                     new String[]{Practice.COL_API_ID}, true);
@@ -96,22 +94,22 @@ public class PracticeFactory {
 
     public boolean deletePracticeAndRelated(Practice practice) {
         try {
-        List<String> sqlActions = new ArrayList<>();
-        sqlActions.add(repository.getDeleteString(practice));
-        QuestionFactory factory = QuestionFactory.getInstance();
-        List<Question> questions = factory.getByPractice(practice.getId().toString());
-        if (questions.size() > 0) {
-            for (Question q : questions) {
-                sqlActions.addAll(factory.getDeleteString(q));
+            List<String> sqlActions = new ArrayList<>();
+            sqlActions.add(repository.getDeleteString(practice));
+            QuestionFactory factory = QuestionFactory.getInstance();
+            List<Question> questions = factory.getByPractice(practice.getId().toString());
+            if (questions.size() > 0) {
+                for (Question q : questions) {
+                    sqlActions.addAll(factory.getDeleteString(q));
+                }
             }
-        }
-        repository.exeSqls(sqlActions);
-        if (!isPracticeInDb(practice)) {
-            //todo 清除coolies
-        }
-        return true;
-    }catch(Exception e){
-        return false;
+            repository.exeSqls(sqlActions);
+            if (!isPracticeInDb(practice)) {
+                //todo 清除coolies
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

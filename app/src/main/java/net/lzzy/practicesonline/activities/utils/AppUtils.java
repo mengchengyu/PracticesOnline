@@ -27,6 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Description:
  */
 public class AppUtils extends Application {
+
+
+
     private static final String SP_SETTING = "spSetting";
     private static final String URL_IP = "urlIp";
     private static final String URL_PORT = "urlPort";
@@ -123,13 +126,13 @@ public class AppUtils extends Application {
         SharedPreferences spSetting = context.getSharedPreferences("spSetting",MODE_PRIVATE);
         spSetting .edit()
                 .putString("urlIp",ip)
-                .putString("urlport",port)
+                .putString("urlPort",port)
                 .apply();
 
     }
     public static Pair<String ,String> loadServerSetting(Context context){
         SharedPreferences spSetting =context.getSharedPreferences(SP_SETTING,MODE_PRIVATE);
-        String ip =spSetting.getString(URL_IP,"10.88.91.102");
+        String ip =spSetting.getString(URL_IP,"10.88.91.103");
         String port=spSetting.getString(URL_PORT,"8888");
         return new Pair<>(ip,port);
     }

@@ -15,6 +15,8 @@ import net.lzzy.practicesonline.activities.utils.AppUtils;
  * Description:
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private Fragment fragment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +25,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutRes());
         AppUtils.AddActivity(this);//
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(getContainerId());
+        fragment = manager.findFragmentById(getContainerId());
         if (fragment == null) {
             fragment = createFragment();
             manager.beginTransaction().add(getContainerId(), fragment).commit();
-
         }
-
+    }
+    protected Fragment getFragment(){
+        return fragment;
 
     }
+
   //  @Override
 //    public void onBackPressed() {
 //        new AlertDialog.Builder(this)

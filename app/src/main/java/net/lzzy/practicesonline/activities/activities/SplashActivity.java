@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.constants.ApiConstants;
 import net.lzzy.practicesonline.activities.fragments.SplashFragment;
-import net.lzzy.practicesonline.activities.utils.AbstractStativHandler;
+import net.lzzy.practicesonline.activities.utils.AbstractStaticHandler;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
 
@@ -32,7 +32,7 @@ public class SplashActivity extends BaseActivity implements SplashFragment.OnSpl
     private TextView tvCount;
     private boolean isServerOn = true;
 
-    private static  class SplashHandler extends AbstractStativHandler<SplashActivity>{
+    private static  class SplashHandler extends AbstractStaticHandler<SplashActivity> {
 
         public SplashHandler(SplashActivity context) {
             super(context);
