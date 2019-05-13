@@ -65,7 +65,7 @@ public class QuestionResult implements Parcelable {
         isRight = right;
     }
 
-    public WrongType getType(Object wrongType) {
+    public WrongType getType() {
         return type;
     }
 

@@ -127,7 +127,7 @@ public class UserCookies {
             result.setQuestionId(question.getId());
             String checkedIds = spOption.getString(question.getId().toString(), "");
             result.setRight(isUserRight(checkedIds, question).first);
-            result.getType(isUserRight(checkedIds, question).second);
+            result.setType(isUserRight(checkedIds, question).second);
             results.add(result);
         }
         return results;

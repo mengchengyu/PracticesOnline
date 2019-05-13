@@ -48,7 +48,7 @@ public class ApiConstants {
      */
 
     public static final String JSON_RESULT_API_ID="PracticeID";
-    public static final String JSON_RESULT_SCORE_RATIO="ScoreRatio";
+    public static final String JSON_RESULT_SCORE_RATIO="ScroreRatio";
     public static final String JSON_RESULT_WRONG_IDS="WrongQuestionIds";
     public static final String JSON_RESULT_PERSON_INFO="PhoneNo";
 

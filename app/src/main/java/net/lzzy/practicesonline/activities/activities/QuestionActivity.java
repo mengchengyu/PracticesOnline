@@ -112,6 +112,7 @@ public class QuestionActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //todo:返回查看数据
 
+
     }
 
     //提交成绩
@@ -149,7 +150,7 @@ public class QuestionActivity extends AppCompatActivity {
                 if (code>=RESPONSE_OK_MIN&&code<=RESPONSE_OK_MAX){
                     Toast.makeText(activity,"提交成功",Toast.LENGTH_SHORT).show();
                     UserCookies.getInstance().commitPractice(activity.practiceId);
-                    activity.redirect();
+                    /*activity.redirect();*/
                 }else {
                     Toast.makeText(activity,"提交失败，请重试",Toast.LENGTH_SHORT).show();
                 }
