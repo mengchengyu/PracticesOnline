@@ -46,12 +46,9 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
         return type;
     }
 
-    public void setType(QuestionType type) {
-        this.type = type;
-    }
 
-    public void getDbType(int dbType) {
-        this.dbType = dbType;
+    public int getDbType() {
+        return dbType;
 
     }
 
@@ -94,9 +91,6 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
         return false;
     }
 
-    public int getDbType() {
-        return 0;
-    }
 
     @Override
     public JSONObject toJson() throws JSONException {
@@ -120,5 +114,9 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
 
 
         }
+    }
+
+    public Iterable<? extends Option> setOptions() {
+        return null;
     }
 }

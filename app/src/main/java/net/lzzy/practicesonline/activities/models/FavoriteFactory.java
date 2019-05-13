@@ -38,10 +38,10 @@ public class FavoriteFactory {
 
     public String getDeleteString(String questionId) {
         Favorite favorite = getByQuestion(questionId);
-        return favorite == null ? repository.getDeleteString(favorite) : null;
+        return favorite == null ? null:repository.getDeleteString(favorite);
     }
 
-    private boolean isQuestionStarred(String questionId) {
+    public boolean isQuestionStarred(String questionId) {
         try {
             List<Favorite> favorites = repository.getByKeyword(questionId,
                     new String[]{Favorite.COL_QUESTION_ID}, true);

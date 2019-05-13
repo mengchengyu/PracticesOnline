@@ -1,6 +1,7 @@
 package net.lzzy.practicesonline.activities.models;
 
 import net.lzzy.practicesonline.activities.constants.ApiConstants;
+import net.lzzy.sqllib.Ignored;
 import net.lzzy.sqllib.Jsonable;
 import net.lzzy.sqllib.Sqlitable;
 
@@ -13,8 +14,10 @@ import java.util.UUID;
  * Created by lzzy_gxy on 2019/4/16.
  * Description:
  */
-public class Option  implements Sqlitable, Jsonable {
+public class Option extends BaseEntity implements Sqlitable, Jsonable {
+    @Ignored
     public static final String COL_QUESTION_ID="questionId";
+
     private String content;
     private String label;
     private UUID questionId;
@@ -83,4 +86,6 @@ public class Option  implements Sqlitable, Jsonable {
         apiId=json.getInt(ApiConstants.JSON_OPTION_API_ID);
 
     }
+
+
 }

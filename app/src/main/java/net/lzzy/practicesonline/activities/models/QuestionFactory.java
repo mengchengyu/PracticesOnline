@@ -32,6 +32,7 @@ public class QuestionFactory {
         //todo:4
         List<Option> options = optionRepository.getByKeyword(question.getId().toString(),
                 new String[]{Option.COL_QUESTION_ID}, true);
+
         question.setOptions(options);
         question.setDbType(question.getDbType());
     }
@@ -43,7 +44,6 @@ public class QuestionFactory {
             Question question = repository.getById(questionId);
             completeQuestion(question);
             return question;
-
         } catch (IllegalAccessException |InstantiationException e) {
             e.printStackTrace();
             return null;
@@ -72,7 +72,9 @@ public class QuestionFactory {
         String q = repository.getInsertString(question);
         List<String> sqlActions = new ArrayList<>();
         for (Option option : question.getOptions()) {
+            option.setQuestionId(question.getId());
             sqlActions.add(optionRepository.getInsertString(option));
+
         }
         sqlActions.add(q);
         repository.exeSqls(sqlActions);

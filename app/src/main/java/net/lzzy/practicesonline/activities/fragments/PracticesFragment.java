@@ -63,7 +63,7 @@ public class PracticesFragment extends BaseFragment {
     private PracticeFactory factory = PracticeFactory.getInstance();
     private ThreadPoolExecutor executor = AppUtils.getExecutor();
     private DownloadHandler handler = new DownloadHandler(this);
-    private boolean isDeleting=false;
+    private boolean isDeleting = false;
     private float touchX1;
     private static final float MIN_DISTANCE = 100;
     private PracticesSelectedListener listener;
@@ -102,7 +102,7 @@ public class PracticesFragment extends BaseFragment {
                     break;
                 case WHAT_QUESTION_EXCEPTION:
                     ViewUtils.dismissProgress();
-                    Toast.makeText(fragment.getContext(),"下载失败请重试\n"+msg.obj.toString(),
+                    Toast.makeText(fragment.getContext(), "下载失败请重试\n" + msg.obj.toString(),
                             Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -111,26 +111,27 @@ public class PracticesFragment extends BaseFragment {
         }
     }
 
-    private  void saveQuestions(String json, UUID practiceId) {
+    private void saveQuestions(String json, UUID practiceId) {
         try {
-            List<Question> questions = QuestionService.getQuestions(json,practiceId);
-            factory.saveQuestions(questions,practiceId);
-            for (Practice practice : practices){
-                if (practice.getId().equals(practiceId)){
+            List<Question> questions = QuestionService.getQuestions(json, practiceId);
+            factory.saveQuestions(questions, practiceId);
+            for (Practice practice : practices) {
+                if (practice.getId().equals(practiceId)) {
                     practice.setDownloaded(true);
                 }
                 adapter.notifyDataSetChanged();
             }
-        }catch (Exception e){
-            Toast.makeText(getContext(),"下载失败请重试\n"+e.getMessage(),
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "下载失败请重试\n" + e.getMessage(),
                     Toast.LENGTH_SHORT).show();
         }
     }
 
-    static class PracticeDownloader extends AsyncTask<Void,Void,String>{
+    static class PracticeDownloader extends AsyncTask<Void, Void, String> {
         WeakReference<PracticesFragment> fragment;
-        PracticeDownloader(PracticesFragment fragment){
-            this.fragment = new  WeakReference<>(fragment);
+
+        PracticeDownloader(PracticesFragment fragment) {
+            this.fragment = new WeakReference<>(fragment);
         }
 
         @Override
@@ -147,7 +148,7 @@ public class PracticesFragment extends BaseFragment {
             try {
                 return PracticeService.getPracticesFromServer();
             } catch (IOException e) {
-                return  e.getMessage();
+                return e.getMessage();
             }
         }
 
@@ -171,11 +172,11 @@ public class PracticesFragment extends BaseFragment {
         }
     }
 
-    static class QuestionDownloader extends AsyncTask<Void, Void,String>{
+    static class QuestionDownloader extends AsyncTask<Void, Void, String> {
         WeakReference<PracticesFragment> fragment;
         Practice practice;
 
-        QuestionDownloader(PracticesFragment fragment,Practice practice){
+        QuestionDownloader(PracticesFragment fragment, Practice practice) {
             this.fragment = new WeakReference<>(fragment);
             this.practice = practice;
         }
@@ -183,14 +184,14 @@ public class PracticesFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ViewUtils.showProgress(fragment.get().getContext(),"开始下载题目......");
+            ViewUtils.showProgress(fragment.get().getContext(), "开始下载题目......");
         }
 
         @Override
         protected String doInBackground(Void... voids) {
             try {
                 return QuestionService.getQuestionsOfPracticeFromServer(practice.getApiId());
-            }catch (IOException e){
+            } catch (IOException e) {
                 return e.getMessage();
             }
         }
@@ -198,18 +199,18 @@ public class PracticesFragment extends BaseFragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            PracticesFragment fragment=this.fragment.get();
-            QuestionFactory factory=QuestionFactory.getInstance();
+            PracticesFragment fragment = this.fragment.get();
+            QuestionFactory factory = QuestionFactory.getInstance();
             try {
-                List<Question> questions=QuestionService.getQuestions(s,practice.getId());
-                for (Question question:questions){
+                List<Question> questions = QuestionService.getQuestions(s, practice.getId());
+                for (Question question : questions) {
                     factory.insert(question);
                 }
                 practice.setDownloaded(true);
                 Toast.makeText(fragment.getContext(), "下载成功", Toast.LENGTH_SHORT).show();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 ViewUtils.dismissProgress();
             }
         }
@@ -218,26 +219,26 @@ public class PracticesFragment extends BaseFragment {
 
     private void handlePracticeException(String message) {
         finishRefresh();
-        Snackbar.make(lv,"同步失败\n"+message,Snackbar.LENGTH_LONG)
-                .setAction("重试",v -> {
+        Snackbar.make(lv, "同步失败\n" + message, Snackbar.LENGTH_LONG)
+                .setAction("重试", v -> {
                     swipe.setRefreshing(true);
                     refreshListener.onRefresh();
                 }).show();
     }
 
 
-    private void finishRefresh(){
+    private void finishRefresh() {
         swipe.setRefreshing(false);
         tvTime.setVisibility(View.GONE);
         tvHint.setVisibility(View.GONE);
         NotificationManager manager = (NotificationManager) Objects.requireNonNull(getContext())
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (manager != null){
+        if (manager != null) {
             manager.cancel(DetectWebService.NOTIFICATION_DETECT_ID);
         }
     }
 
-    public void startRefresh(){
+    public void startRefresh() {
         swipe.setRefreshing(true);
         refreshListener.onRefresh();
     }
@@ -265,7 +266,7 @@ public class PracticesFragment extends BaseFragment {
         });
     }
 
-    private void downloadPracticesAsync(){
+    private void downloadPracticesAsync() {
         new PracticeDownloader(this).execute();
     }
 
@@ -309,14 +310,17 @@ public class PracticesFragment extends BaseFragment {
                         .setMessage("确定要删除该章节及题目吗？_(:з」∠)_")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认", (dialogInterface, i) ->
-                        {   isDeleting=false;
+                        {
+                            isDeleting = false;
                             adapter.remove(practice);
-                            practices.remove(practice);
-                            adapter.notifyDataSetChanged();
-                            btnDel.setVisibility(View.GONE);
+                            //
+//                            practices.remove(practice);
+//                            adapter.notifyDataSetChanged();
+//                            btnDel.setVisibility(View.GONE);
+                            //
                         }).show());
                 holder.getConvertView().setOnTouchListener((v, event) -> {
-                    slideToDelete(event, btnDel,practice);
+                    slideToDelete(event, btnDel, practice);
                     return true;
                 });
             }
@@ -336,21 +340,21 @@ public class PracticesFragment extends BaseFragment {
 
 
     private void slideToDelete(MotionEvent event, Button btnDel, Practice practice) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchX1=event.getX();
+                touchX1 = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
-                if(touchX1-event.getX()> MIN_DISTANCE ){
-                    if (!isDeleting){
+                if (touchX1 - event.getX() > MIN_DISTANCE) {
+                    if (!isDeleting) {
                         btnDel.setVisibility(View.VISIBLE);
-                        isDeleting=true;
+                        isDeleting = true;
                     }
-                }else {
-                    if (btnDel.isShown()){
+                } else {
+                    if (btnDel.isShown()) {
                         btnDel.setVisibility(View.GONE);
-                        isDeleting=false;
-                    }else {
+                        isDeleting = false;
+                    } else {
                         performItemClick(practice);
                     }
                 }
@@ -360,13 +364,13 @@ public class PracticesFragment extends BaseFragment {
         }
     }
 
-    private void performItemClick(Practice practice){
-        if (practice.isDownloaded()  && listener != null){
-            listener.onPracticeSelected(practice.getId().toString(),practice.getApiId());
-        }else {
+    private void performItemClick(Practice practice) {
+        if (practice.isDownloaded() && listener != null) {
+            listener.onPracticeSelected(practice.getId().toString(), practice.getApiId());
+        } else {
             new AlertDialog.Builder(getContext())
                     .setMessage("下载该章节题目吗？")
-                    .setPositiveButton("下载",(dialog, which) ->downloadQuestions(practice))
+                    .setPositiveButton("下载", (dialog, which) -> downloadQuestions(practice))
                     .setNegativeButton("取消", null)
                     .show();
         }
@@ -377,22 +381,22 @@ public class PracticesFragment extends BaseFragment {
     }
 
 
-    private void downloadQuestions(int apiId){
-        ViewUtils.showProgress(getContext(),"开始下载题目......");
+    private void downloadQuestions(int apiId) {
+        ViewUtils.showProgress(getContext(), "开始下载题目......");
         executor.execute(() -> {
             try {
                 String json = QuestionService.getQuestionsOfPracticeFromServer(apiId);
-                Message msq = handler.obtainMessage(WHAT_QUESTION_DONE,json);
+                Message msq = handler.obtainMessage(WHAT_QUESTION_DONE, json);
                 msq.arg1 = apiId;
                 handler.sendMessage(msq);
             } catch (IOException e) {
-                handler.sendMessage(handler.obtainMessage(WHAT_QUESTION_EXCEPTION,e.getMessage()));
+                handler.sendMessage(handler.obtainMessage(WHAT_QUESTION_EXCEPTION, e.getMessage()));
             }
         });
     }
 
-    private void downloadQuestionsAsync(Practice practice){
-        new QuestionDownloader(this,practice).execute();
+    private void downloadQuestionsAsync(Practice practice) {
+        new QuestionDownloader(this, practice).execute();
     }
 
     private void initViews() {
@@ -423,31 +427,32 @@ public class PracticesFragment extends BaseFragment {
     @Override
     public void search(String kw) {
         practices.clear();
-        if(kw.isEmpty()) {
+        if (kw.isEmpty()) {
             practices.addAll(factory.get());
-        }else {
+        } else {
             practices.addAll(factory.search(kw));
         }
         adapter.notifyDataSetChanged();
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof PracticesSelectedListener){
-            listener= (PracticesSelectedListener) context;
-        }else {
-            throw new ClassCastException(context+"必须实现PracticesSelectedListener");
+        if (context instanceof PracticesSelectedListener) {
+            listener = (PracticesSelectedListener) context;
+        } else {
+            throw new ClassCastException(context + "必须实现PracticesSelectedListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        listener=null;
+        listener = null;
         handler.removeCallbacksAndMessages(null);
     }
 
-    public interface PracticesSelectedListener{
+    public interface PracticesSelectedListener {
         void onPracticeSelected(String practiceId, int apiId);
     }
 
