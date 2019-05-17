@@ -3,12 +3,9 @@ package net.lzzy.practicesonline.activities.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.os.ResultReceiver;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,8 +35,6 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.CommonDataSource;
 
 public class QuestionActivity extends AppCompatActivity {
     private static final int WIFI_RESPONSE_CODE = 1;
@@ -98,6 +93,7 @@ public class QuestionActivity extends AppCompatActivity {
         tvView.setOnClickListener(v -> redirect());
     }
 
+
     private void redirect() {
         List<QuestionResult> results =UserCookies.getInstance().getResultFromCookies(questions);
         Intent intent =new Intent(this,ResultActivity.class);
@@ -111,6 +107,12 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //todo:返回查看数据
+//        int aId=data.getIntExtra(ResultActivity.EXTRA_POSITION,-1);
+//        pager.setCurrentItem(aId);
+        if (resultCode==RESULT_OK&&requestCode == REQUEST_CODE_RESULT){
+            pos=data.getIntExtra(ResultActivity.EXTRA_POSITION,0);
+            pager.setCurrentItem(pos,true);
+        }
 
 
     }
