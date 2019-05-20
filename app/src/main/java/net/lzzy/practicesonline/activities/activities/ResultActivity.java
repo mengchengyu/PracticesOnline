@@ -50,7 +50,7 @@ public class ResultActivity extends BaseActivity implements GridFragment.onResul
     @Override
     public void gotoChart() {
         getManager().beginTransaction()
-                .replace(getContainerId(), AnalysisFragment.newInstance(results)).commit();
+                .replace(getContainerId(), ChartFragment.newInstance(results)).commit();
     }
 
 

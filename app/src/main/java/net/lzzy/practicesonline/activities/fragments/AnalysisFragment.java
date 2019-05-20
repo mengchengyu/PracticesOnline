@@ -76,7 +76,7 @@ public class AnalysisFragment extends BaseFragment {
         }
         BarChartView barChart =find(R.id.fragment_analysis_bar);
         barChart.setHorizontalAxis(HORIZONTAL_AXIS);
-        barChart.setDataList(data,(int)max);
+        barChart.setDataList(data,(int)max*2);
     }
 
     @Override

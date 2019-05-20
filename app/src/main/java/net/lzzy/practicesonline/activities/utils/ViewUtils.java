@@ -21,6 +21,7 @@ import net.lzzy.practicesonline.activities.activities.SplashActivity;
  * Description:
  */
 public class ViewUtils {
+
     private static AlertDialog dialog;
 
     public static void showProgress(Context context, String message){
@@ -33,6 +34,8 @@ public class ViewUtils {
         }
         dialog.show();
     }
+
+
 
     public static void dismissProgress(){
         if (dialog != null && dialog.isShowing()){
