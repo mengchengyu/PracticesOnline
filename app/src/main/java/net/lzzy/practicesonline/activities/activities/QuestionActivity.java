@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.fragments.QuestionFragment;
+import net.lzzy.practicesonline.activities.models.FavoriteFactory;
 import net.lzzy.practicesonline.activities.models.Question;
 import net.lzzy.practicesonline.activities.models.QuestionFactory;
 import net.lzzy.practicesonline.activities.models.UserCookies;
@@ -107,11 +108,33 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //todo:返回查看数据
+
+
 //        int aId=data.getIntExtra(ResultActivity.EXTRA_POSITION,-1);
 //        pager.setCurrentItem(aId);
         if (resultCode==RESULT_OK&&requestCode == REQUEST_CODE_RESULT){
             pos=data.getIntExtra(ResultActivity.EXTRA_POSITION,0);
             pager.setCurrentItem(pos,true);
+        }
+        if (requestCode == REQUEST_CODE_RESULT && resultCode == CONTEXT_INCLUDE_CODE && data != null){
+            String pId = data.getStringExtra(ResultActivity.PRACTICE_ID);
+            if (!pId.isEmpty()){
+                List<Question> questionList = new ArrayList<>();
+                FavoriteFactory factory = FavoriteFactory.getInstance();
+                for (Question question:QuestionFactory.getInstance().getByPractice(pId)){
+                    if (factory.isQuestionStarred(question.getId().toString())){
+                        questionList.add(question);
+                    }
+                }
+                questions.clear();
+                questions.addAll(questionList);
+                initDots();
+                adapter.notifyDataSetChanged();
+                if (questions.size() > 0){
+                    pager.setCurrentItem(0);
+                    refreshDots(0);
+                }
+            }
         }
 
 
